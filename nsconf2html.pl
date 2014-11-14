@@ -3,6 +3,26 @@
 
 use strict;
 use warnings;
+use Data::Dumper;
+
+
+#input the config line, return a hash that the keys are the -someting in the config line
+sub extract_params{
+		my $line = $_[0];
+		my %params;
+        my @params_temp = split('-',$line);
+        my @arr;
+        print "+++++++++ Dump split en - arreglo:\n".Dumper(@params_temp)."\n+++++++++++++arreglo fin -------- \n";
+	for my $elem (@params_temp){
+		@arr = split(/ /, $elem);
+  		$params{$arr[0]} = $arr[1];
+  		#print "\n Key ".$arr[0]." Value ".$arr[1]."\n";
+  		print "==========Dump sub split en ' ':\n".Dumper(@arr)."\n ========= arreglo fin --------------- \n";
+  	}
+  	
+  	return %params;
+}
+
 
 my $file = $ARGV[0];
 if($file !~ /conf/){
@@ -61,18 +81,27 @@ close $info;
 open $info, $file or die "Could not open $file: $!";
 
 print "Virtual Server List:\n";
-print $out "<table border=1pt><tr><td>Virtual Server Name</td><td>IP</td><td>Port</td></tr>\n";
+print $out "<table border=1pt><tr><td>Virtual Server Name</td><td>Category</td><td>Value</td></tr>\n";
 #first pass to detect virtual servers
 while( my $line = <$info>)  {   
    
     if($line =~ /add lb vserver/){
         my @values = split(' ',$line);
+        my %params = extract_params($line);
     	$vserver{ $values[3] } = $line;
         print $values[3]."\n";
-        print $out "<tr><td>".$values[3]."</td>";
-                #"<td>".$values[4]."</td>"; this is the type of service
-        print $out "<td>".$values[5]."</td>";
-        print $out "<td>".$values[6]."</td></tr>\n";
+        print $out "<tr><td rowspan=6>".$values[3]."</td><td>Tipo</td><td>".$values[4]."</td></tr>";
+        print $out "<tr><td>IP</td><td>".$values[5]."</td></tr>\n";
+        print $out "<tr><td>Puerto</td><td>".$values[6]."</td></tr>\n";
+    	############## Add aditional lines if you need more rows with information, 
+    	############## params is a hash that uses the key as the -param i.e. -persistenceType without the '-' 
+    	print $out "<tr><td>persistenceType</td><td>".$params{"persistenceType"}."</td></tr>\n";
+    	print $out "<tr><td>Persistence Timeout</td><td>".$params{"timeout"}."</td></tr>\n";
+    	print $out "<tr><td>Loadbalance Method</td><td>".$params{"lbmethod"}."</td></tr>\n";
+    	#print "Dump hash".Dumper(\%params)."\n";
+    #persistenceType
+    #timeout
+    #cltTimeout
     }
 }
 print $out "</table><br><br>\n";
