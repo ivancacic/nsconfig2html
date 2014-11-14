@@ -133,12 +133,13 @@ while( my $line = <$info>)  {
         my @values = split(' ',$line);
         my %params = extract_params($line);
     	$vserver{ $values[3] } = $line;
-    	my @services =  $bindings{$values[3]};
+    	my @services =  @{$bindings{$values[3]}};
     	#print "Dump arr".Dumper(@services)."\n";
 
     	#print "==============\n".Dumper(@services)."\n+++++++\n";
         print $values[3]."\n";
-        print $out "<tr><td rowspan=6>".$values[3]."</td><td>Tipo</td><td>".$values[4]."</td></tr>\n";
+        my $rowspan = 6 + scalar @services;
+        print $out "<tr><td rowspan=".$rowspan.">".$values[3]."</td><td>Tipo</td><td>".$values[4]."</td></tr>\n";
         print $out "<tr><td>IP</td><td>".$values[5]."</td></tr>\n";
         print $out "<tr><td>Puerto</td><td>".$values[6]."</td></tr>\n";
     	############## Add aditional lines if you need more rows with information, 
@@ -157,9 +158,11 @@ while( my $line = <$info>)  {
     		print $out "<tr><td>Loadbalance Method</td><td>ROUNDROBIN</td></tr>\n";
     	}
     	
+    	#print "\n++++++++++\n".Dumper(@services)."\n==========\n";
     	for my $i (0 .. @services-1){
-    		print "++++++++++\n".Dumper(@services)."\n==========";
-    		if ($i==0){ print $out "<tr><td>Services</td rowspan=".@services."><td>".$services[$i]."</td></tr>\n";
+    		#print "iteracion: ".$i." VS: ".$values[3]." Services: ".@services[$i]."\n";
+    		if ($i==0){ 
+    			print $out "<tr><td rowspan=".scalar @services.">Services</td><td>".$services[$i]."</td></tr>\n";
     		}else{
     			print $out "<tr><td>".$services[$i]."</td></tr>\n";	
     		}
