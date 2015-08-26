@@ -1,11 +1,8 @@
 # nsconfig2html
-Tool that generates a HTML file with the NetScaler LB configuration
+A perls script which generates a HTML file with the NetScaler LB configuration from the ns.conf
 
-Click on link, there is a download botton in the lower right. Un zip.
-If you have MAC you can use it right there in terminal, or in the NetScaler. If you have windows you need to download and install perl.
-Copy the file nsconfig2html.pl to your preferred location, if in the NS place it it /nsconfig
+Copy the file nsconfig2html.pl to your preferred location, place it in /nsconfig if running from the netscaler.
 To run simply use:
-Perl  nsconf2html.pl //path/to/ns.conf
+perl  nsconf2html.pl /path/to/ns.conf /path/to/output.html
 
-The result will be a file called conf.html placed in the same location as the .pl file.
-
+If no output is specified the script will dump to conf.html.
