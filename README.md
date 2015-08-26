@@ -1,5 +1,5 @@
 # nsconfig2html
-A perls script which generates a HTML file with the NetScaler LB configuration from the ns.conf
+A perl script which generates a HTML file with the NetScaler LB configuration from the ns.conf
 
 Copy the file nsconfig2html.pl to your preferred location, place it in /nsconfig if running from the netscaler.
 To run simply use:
