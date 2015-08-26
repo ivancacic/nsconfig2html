@@ -23,9 +23,14 @@ sub extract_params{
 }
 
 
-my $file = $ARGV[0];
+my $file = shift;
+my $dest = shift;
 if($file !~ /conf/){
 die "Not a valid argumet\n";
+}
+
+if(!$dest){
+  $dest = "conf.html";
 }
 
 my %td = ();
@@ -37,7 +42,7 @@ my %vserver = ();
 my %bindings = ();
 
 my $out;
-open($out, ">" ,"conf.html") or die "Could not open output file\n";
+open($out, ">" ,"$dest") or die "Could not open output file\n";
 
 
 
